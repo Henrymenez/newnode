@@ -67,6 +67,39 @@ res.status(201).json({
 })
 });
 
+app.patch('/api/v1/tours/:id',(req,res)=>{
+    const id = req.params.id * 1;
+
+    if(id > tours.length){
+        return res.status(404).json({
+            status: 'failed',
+            message: 'Invalid id'
+        });
+    }
+res.status(200).json({
+    status: 'success',
+data: {
+    tour: 'Updated tour'
+}
+})
+});
+
+app.delete('/api/v1/tours/:id',(req,res)=>{
+    const id = req.params.id * 1;
+
+    if(id > tours.length){
+        return res.status(404).json({
+            status: 'failed',
+            message: 'Invalid id'
+        });
+    }
+res.status(204).json({
+    status: 'success',
+  data: null
+})
+});
+
+
 
 app.listen(port,()=>{
     console.log('listening on port '+port);
