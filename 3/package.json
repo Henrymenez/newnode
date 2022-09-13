@@ -4,8 +4,8 @@
   "description": "Learn node",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "dev": "node app.js"
+    "start": "nodemon server.js",
+    "dev": "node server.js"
   },
   "author": "Menez",
   "license": "ISC",

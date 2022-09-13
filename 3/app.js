@@ -3,7 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
-const port = process.env.PORT || 3000;
+
 
 // 1)middlewares
 app.use(morgan('dev'));
@@ -25,7 +25,4 @@ app.get('/', (req, res) => {
 app.use('/api/v1/tours',tourRouter);
 app.use('/api/v1/users',userRouter);
 
-// 4) start server
-app.listen(port,()=>{
-    console.log('listening on port '+port);
-})
+module.exports = app; 
