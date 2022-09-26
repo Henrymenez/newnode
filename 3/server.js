@@ -11,8 +11,8 @@ mongoose.connect(DB,{
     useCreateIndex: true,
     useFindAndModify: false
 }).then(() => console.log('DB connection established'))
-// console.log(process.env);
+
  
 app.listen(port,()=>{
     console.log('listening on port '+ port);
-})
+}) 
