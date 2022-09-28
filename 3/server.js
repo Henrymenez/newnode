@@ -6,10 +6,11 @@ const app = require('./app');
 const port = process.env.PORT || 3000;
 
 const DB = process.env.DB;
-mongoose.connect(DB,{
+mongoose.connect('mongodb://localhost:27017/natours',{
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useUnifiedTopology: true
 }).then(() => console.log('DB connection established'))
 
  
