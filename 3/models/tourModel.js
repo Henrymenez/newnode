@@ -51,16 +51,55 @@ const toursSchema = new mongoose.Schema({
     default: Date.now(),
     select: false
   },
-  startDates: [Date]
+  startDates: [Date],
+  secretTour: {
+    type: Boolean,
+    default: false
+  }
 },
 {
   toJSON: { virtual: true },
   toObject: { virtual: true },
 });
 
-toursSchema.virtual('durationWeeks').get(function () {
+toursSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7
 })
+//runs only ion save and create
+// toursSchema.pre('save', function (next) {
+//   console.log(this);
+  // next();
+// })
+
+// toursSchema.post('save', function(doc,next) {
+//   console.log(doc);
+//   next(); 
+// })
+
+
+//query middleware regex to get all strings thar start with find
+
+toursSchema.pre(/^find/, function(next) {
+// toursSchema.pre('find', function(next) {
+this.find({ secretTour: {$ne: true }})
+
+this.start = Date.now();
+next();
+});
+
+toursSchema.post(/^find/, function(doc,next) {
+  console.log(`Query took ${Date.now() - this.start} miliseconds`);
+console.log(doc);
+next();
+})
+
+
+//aggregation middleware
+toursSchema.pre('aggregate', function(next) {
+console.log(this.pipeline());
+next();
+})
+
 const Tour = mongoose.model('Tour', toursSchema);
 
 module.exports = Tour;
