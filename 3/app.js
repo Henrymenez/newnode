@@ -24,6 +24,7 @@ app.get('/', (req, res) => {
   res.send({ message: 'hello from app' });
 });
 
+
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
