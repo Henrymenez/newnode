@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide a password'],
     minlength: 8,
+    select: false
   },
   passwordConfirm: {
     type: String,
@@ -33,17 +34,27 @@ const userSchema = new mongoose.Schema({
       message: 'Passwords are not the same',
     },
   },
+  passwordChangedAt: Date
 });
 
 userSchema.pre('save', async function (next) {
  
   if (!this.isModified('password')) return next();
-
   this.password = await bcrypt.hash(this.password, 12); 
-
   this.passwordConfirm = undefined;
   next();
 });
+
+userSchema.methods.correctPassword = async function(canidatePassword,userPassword){
+  return await  bcrypt.compare(canidatePassword,userPassword)
+}
+
+userSchema.methods.changedPasswordAfter = function(JWTTimestamp){
+  if(this.passwordChangedAt){
+    
+  }
+  return false
+}
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
