@@ -3,6 +3,7 @@ const express = require('express');
 // const helmet = require('helmet')
 //const mongoSanitize = require('express-mongo-sanitize')
 //const xss = require('xss-clean');
+//const  hpp = require('hpp');
 const morgan = require('morgan');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -28,22 +29,35 @@ if (process.env.NODE_ENV == 'development') {
 // app.use('/api',limiter);
 
 //body parser, reading data from body to req.body
-app.use(express.json({
-  limit: '10kb'
-}));
+app.use(
+  express.json({
+    limit: '10kb',
+  })
+);
 
 //data sanitization against NOsql query injection and XSS
 // app.use(mongoSanitize());
 // app.use(xss());
 
-
+//prevent parameter polution
+// app.use(
+  //hpp({
+//   whitelist: [
+// 'duration',
+// 'ratingAverage',
+//'ratingsQauntity',
+//'maxGroupSize',
+//'difficulty',
+//'price'
+//   ]
+// }))
 
 //serving static files
 app.use(express.static(`${__dirname}/public`));
 //Test middlewware for setting request time
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  // console.log(req.headers); 
+  // console.log(req.headers);
   next();
 });
 
@@ -51,12 +65,13 @@ app.get('/', (req, res) => {
   res.send({ message: 'hello from app' });
 });
 
-
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
 app.all('*', (req, res, next) => {
-  next(new AppError(`Cant find ${req._parsedOriginalUrl.pathname} on this server`));
+  next(
+    new AppError(`Cant find ${req._parsedOriginalUrl.pathname} on this server`)
+  );
 });
 
 app.use(globalErrorHandler);
