@@ -16,7 +16,7 @@ mongoose.connect('mongodb://localhost:27017/natours',{
 }).then(() => console.log('DB connection established'))
 
  //read file json
- const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours-simple.json`,'utf-8'));
+ const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`,'utf-8'));
 
  //import Data
  const importData = async ()=>{

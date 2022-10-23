@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+// const User = require("./userModel");
 
 const toursSchema = new mongoose.Schema(
   {
@@ -29,10 +30,10 @@ const toursSchema = new mongoose.Schema(
       type: Number,
       validate: {
         validator: function (value) {
-        return value < this.price
+          return value < this.price;
+        },
+        message: 'Discount Price  should be less than price',
       },
-      message: 'Discount Price  should be less than price'
-    },
     },
 
     ratingAverage: {
@@ -74,6 +75,35 @@ const toursSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    startLocation: {
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinate: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point'],
+        },
+        coordinate: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   {
     toJSON: { virtual: true },
@@ -85,6 +115,15 @@ toursSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 //runs only ion save and create
+
+//imbeding new document
+// toursSchema.pre('save', async function(next){
+// const guidesPromises = this.guides.map(async id => await User.findById(id))
+
+// this.guides = await Promise.all(guidesPromises)
+
+//   next();
+// })
 // toursSchema.pre('save', function (next) {
 //   console.log(this);
 // next();
